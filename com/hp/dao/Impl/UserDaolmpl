@@ -1,32 +1,78 @@
-package com.hp.services;
+package com.hp.dao.Impl;
 
-
+import com.hp.dao.UserDao;
 import com.hp.pojo.User;
+import com.hp.util.JdbcUtil;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 业务逻辑类
- *
- */
+public class UserDaoImpl implements UserDao {
+    private List<User> list=new ArrayList<>();
+    private User user=new User();
 
 
+    //全查询
+    @Override
+    public List<User> selectAllUser() {
+        User user=null;
+        try {
+        ResultSet query = JdbcUtil.query("select * from users", null);
+        while( query.next()){
+            user=new User();
+                user.setAdmin(query.getString(1));
+                user.setPassword(query.getString(2));
 
-public interface UserActionServices {
+                list.add(user);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }finally {
+            JdbcUtil.close();
+        }
+        return list;
+    }
 
-    //1.注册(添加数据)
-    public boolean register(User user);
-    // 2.查看所有用户
-    public  List<User> getALLUser();
-    // 3.通过admin查询用户
-    public  User getALLUserByAdmin(String admin);
-    // 4.通过admin修改密码
-    public  boolean updatePasswordByAdmin(String admin,String newPassword);
-    // 5.通过admin删除用户
-    public  boolean deletePasswordByAdmin(String admin);
+    //admin查询user
+    @Override
+    public User selectUserByAdmin(String admin) {
+        try {
+            ResultSet query = JdbcUtil.query("select * from users where admin=?", new Object[]{admin});
 
+            while( query.next()){
+                user.setAdmin(query.getString(1));
+                user.setPassword(query.getString(2));
+            }
 
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }finally {
+            JdbcUtil.close();
+        }
+        return user;
+    }
 
+    //注册
+    @Override
+    public int registerUser(User user) {
+        int update = JdbcUtil.update("insert into users values(?,?)", new Object[]{user.getAdmin(),user.getPassword()});
+        return update;
+    }
 
+    //admin更改pwd
+    @Override
+    public int updatePwdByAdmin(String admin,String newPassword) {
+        int update = JdbcUtil.update("update users set password=? where admin=?", new Object[]{newPassword,admin});
 
+        return update;
+    }
+
+    //admin删除user
+    @Override
+    public int deleteUserByAdmin(String admin) {
+        int update = JdbcUtil.update("delete from users where admin=?", new Object[]{admin});
+        return update;
+    }
 }
