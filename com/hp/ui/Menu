@@ -1,0 +1,95 @@
+package com.hp.ui;
+
+import com.hp.pojo.User;
+import com.hp.services.Impl.UserActionServicesImpl;
+import com.hp.services.UserActionServices;
+
+import java.util.List;
+import java.util.Scanner;
+
+public class Menu {
+
+    private Scanner scanner=new Scanner(System.in);
+    private UserActionServices userActionServices=new UserActionServicesImpl();
+    private User user=new User();
+    private String admin=null;
+    private String password=null;
+    public void mainMenu(){
+        System.out.println("***************************用户管理*****************************");
+        System.out.println("请选择：");
+        System.out.println("1.注册");
+        System.out.println("2.查看所有用户");
+        System.out.println("3.通过admin查看用户");
+        System.out.println("4.通过admin修改密码 ");
+        System.out.println("5.通过admin删除用户");
+        int choose=scanner.nextInt();
+
+        switch (choose){
+            case 1:
+                //添加
+                System.out.println("请输入用户名：");
+                admin=scanner.next();
+                System.out.println("请输入密码：");
+                password=scanner.next();
+                user.setAdmin(admin);
+                user.setPassword(password);
+                boolean register = userActionServices.register(user);
+                if (register){
+                    System.out.println("注册成功：");
+                }else{
+                    System.out.println("注册失败：");
+                }
+                break;
+            case 2:
+                //全查询
+
+                List<User> allUser = userActionServices.getALLUser();
+                for (int i = 0; i < allUser.size(); i++) {
+                    System.out.println(allUser.get(i));
+                }
+
+                break;
+            case 3:
+                //查找用户
+                System.out.println("请输入用户名：");
+                admin=scanner.next();
+                User allUserByAdmin = userActionServices.getALLUserByAdmin(admin);
+                System.out.println(allUserByAdmin);
+
+                break;
+            case 4:
+                //修改密码
+                System.out.println("请输入用户名：");
+                admin=scanner.next();
+                System.out.println("请输入新密码：");
+                String newPassword= scanner.next();
+                boolean b = userActionServices.updatePasswordByAdmin(admin, newPassword);
+
+                if(b){
+                    System.out.println("修改成功");
+                }else{
+                    System.out.println("修改失败");
+                }
+                break;
+            case 5:
+                //删除用户
+                System.out.println("请输入用户名");
+                admin=scanner.next();
+                boolean b1 = userActionServices.deletePasswordByAdmin(admin);
+                if(b1){
+                    System.out.println("删除成功");
+                }else{
+                    System.out.println("删除失败");
+                }
+                break;
+            default:
+                break;
+
+        }
+
+
+
+
+
+    }
+}
