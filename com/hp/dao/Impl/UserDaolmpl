@@ -1,0 +1,32 @@
+package com.hp.services;
+
+
+import com.hp.pojo.User;
+
+import java.util.List;
+
+/**
+ * 业务逻辑类
+ *
+ */
+
+
+
+public interface UserActionServices {
+
+    //1.注册(添加数据)
+    public boolean register(User user);
+    // 2.查看所有用户
+    public  List<User> getALLUser();
+    // 3.通过admin查询用户
+    public  User getALLUserByAdmin(String admin);
+    // 4.通过admin修改密码
+    public  boolean updatePasswordByAdmin(String admin,String newPassword);
+    // 5.通过admin删除用户
+    public  boolean deletePasswordByAdmin(String admin);
+
+
+
+
+
+}
