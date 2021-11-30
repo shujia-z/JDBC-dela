@@ -1,0 +1,11 @@
+package com.hp.Test;
+
+import com.hp.ui.Menu;
+
+public class UserActionTest {
+    public static void main(String[] args) {
+
+        Menu menu=new Menu();
+        menu.mainMenu();
+    }
+}
