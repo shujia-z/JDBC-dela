@@ -1,0 +1,49 @@
+package com.hp.services.Impl;
+
+import com.hp.dao.Impl.UserDaoImpl;
+import com.hp.dao.UserDao;
+import com.hp.pojo.User;
+import com.hp.services.UserActionServices;
+
+import java.util.List;
+
+public class UserActionServicesImpl implements UserActionServices {
+    UserDao userAction=new UserDaoImpl();
+    @Override
+    public boolean register(User user) {
+
+        int insert = userAction.registerUser(user);
+        if (insert != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<User> getALLUser() {
+        return userAction.selectAllUser();
+    }
+
+    @Override
+    public User getALLUserByAdmin(String admin) {
+        return userAction.selectUserByAdmin(admin);
+    }
+
+    @Override
+    public boolean updatePasswordByAdmin(String admin, String newPassword) {
+        int update = userAction.updatePwdByAdmin(admin, newPassword);
+        if (update != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deletePasswordByAdmin(String admin) {
+        int delete = userAction.deleteUserByAdmin(admin);
+        if (delete != 0) {
+            return true;
+        }
+        return false;
+    }
+}
