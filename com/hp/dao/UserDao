@@ -1,0 +1,23 @@
+package com.hp.dao;
+
+import com.hp.pojo.User;
+
+import java.sql.ResultSet;
+import java.util.List;
+
+public interface UserDao {
+
+    //全查询
+    List<User> selectAllUser();
+    //通过admin查询数据
+    User selectUserByAdmin(String admin);
+
+    //注册
+    int registerUser(User user);
+
+    //通过admin更改密码
+    int updatePwdByAdmin(String admin,String newPassword);
+
+    //通过admin删除用户
+    int deleteUserByAdmin(String admin);
+}
